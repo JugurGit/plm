@@ -1,0 +1,11 @@
+id_user;type;nom;lieu_de_travail;mot_de_passe
+id1;Manager;Alice Dupont;Paris;pass1266
+id2;Manager;Bob Martin;Lyon;pass3489
+id3;Partenaire;Claire Lefevre;Marseille;pass3894
+id4;Partenaire;David Bernard;Toulouse;pass3691
+id5;Commercial;Emma Girard;Nice;pass5415
+id6;Commercial;Franck Roux;Nantes;pass8929
+id7;Partenaire;Isabelle Laurent;Bordeaux;pass8295
+id8;Commercial;Julien Simon;Strasbourg;pass7959
+id9;Partenaire;Léa Mercier;Lille;pass1606
+id10;Scientifique;Thomas Dubois;Rennes;pass9802

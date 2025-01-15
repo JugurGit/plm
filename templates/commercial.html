@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial - Parfum</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f4eb; /* Même couleur que la barre de navigation */
+            color: #333; /* Texte en gris foncé pour un bon contraste */
+        }
+        .card {
+            background-color: #ffffff; /* Conserve un fond blanc pour les cartes */
+        }
+        .navbar-brand img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg" style="background-color: #f8f4eb;">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <span style="margin-left: 10px;">COSMETIC FACTORY</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if session['user_name'] %}
+                    <li class="nav-item">
+                        <a class="nav-link text-dark">Connecté en tant que : <strong>{{ session['user_name'] }}</strong></a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Se connecter</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-danger text-white ms-2" href="/logout">Déconnexion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenu principal -->
+<div class="container my-5">
+    <h1 class="text-center mb-4">Informations du Parfum</h1>
+    <hr class="my-4">
+
+    <!-- Formulaire de recherche -->
+    <div class="card shadow-sm p-4 mb-4">
+        <h4 class="mb-3">Rechercher un parfum</h4>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="parfum_id" class="form-label">ID du parfum :</label>
+                <input type="text" id="parfum_id" name="parfum_id" class="form-control" placeholder="Entrez l'ID du parfum" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+    </div>
+
+    <!-- Résultat de la recherche -->
+    {% if parfum_info %}
+        {% if parfum_info == "Parfum non trouvé." %}
+            <div class="alert alert-danger" role="alert">
+                {{ parfum_info }}
+            </div>
+        {% else %}
+            <!-- Affichage des informations du parfum -->
+            <div class="card shadow-sm p-4">
+                <h4 class="mb-3">Détails du Parfum</h4>
+                <p><strong>ID :</strong> {{ parfum_info['id_parfum'] }}</p>
+                <p><strong>Nom :</strong> {{ parfum_info['nom'] }}</p>
+                <p><strong>Prix :</strong> {{ parfum_info['prix'] }}</p>
+                <p><strong>Sexe :</strong> {{ parfum_info['sexe'] }}</p>
+                <p><strong>Description :</strong> {{ parfum_info['description'] }}</p>
+                <p><strong>État :</strong> {{ parfum_info['etat_du_projet'] }}</p>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

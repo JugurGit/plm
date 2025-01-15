@@ -1,0 +1,6 @@
+id_componant;nom;id_parfum;quantité;version
+1;Composant A;1;14;1.0
+2;Composant B;1;15;1.1
+3;Composant C;1;12;1.0
+4;Composant D;2;8;2.0
+5;Composant A;2;20;1.2

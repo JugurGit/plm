@@ -1,0 +1,11 @@
+id_parfum;nom;prix;sexe;description;etat_du_projet
+1;Eau de Rose;100;Homme;Un parfum floral délicat avec des notes de rose fraîche.;Lancé
+2;Bois Mystique;70;Homme;Un mélange boisé et épicé pour une aura mystérieuse.;En développement
+3;Citrus Passion;45;Unisexe;Une explosion d'agrumes pour une énergie vibrante.;Lancé
+4;Océan Bleu;55;Femme;Un souffle marin et rafraîchissant pour les aventuriers.;En développement
+5;Velours Noir;80;Homme;Des accords sombres et riches pour une élégance sophistiquée.;Prototype
+6;Fleur Sauvage;60;Femme;Un bouquet floral naturel rappelant la campagne.;Prototype
+7;Ambre Royal;95;Unisexe;Un parfum opulent avec des notes d'ambre et de musc.;Lancé
+8;Vanille Sensuelle;75;Femme;Une douceur enveloppante de vanille et de caramel.;En développement
+9;Épices d'Orient;85;Homme;Des arômes exotiques d'épices pour un voyage olfactif.;Lancé
+10;Lune d'Argent;65;Unisexe;Un parfum lunaire avec des touches métalliques et fraîches.;Prototype

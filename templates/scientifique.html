@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche Scientifique</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f4eb; /* Même couleur que la barre de navigation */
+            color: #333; /* Texte en gris foncé pour un bon contraste */
+        }
+        .card {
+            background-color: #ffffff; /* Conserve un fond blanc pour les cartes */
+        }
+        .navbar-brand img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+    <script>
+        function toggleInputs() {
+            const radioParfum = document.getElementById('radio_parfum').checked;
+            document.getElementById('parfum_input').style.display = radioParfum ? 'block' : 'none';
+            document.getElementById('composant_input').style.display = !radioParfum ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+
+<!-- Barre de navigation -->
+<nav class="navbar navbar-expand-lg" style="background-color: #f8f4eb;">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <span style="margin-left: 10px;">COSMETIC FACTORY</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if session['user_name'] %}
+                    <li class="nav-item">
+                        <a class="nav-link text-dark">Connecté en tant que : <strong>{{ session['user_name'] }}</strong></a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Se connecter</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-danger text-white ms-2" href="/logout">Déconnexion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenu principal -->
+<div class="container my-5">
+    <h1 class="text-center mb-4">Recherche Scientifique</h1>
+    <hr class="my-4">
+
+    <!-- Formulaire de choix -->
+    <div class="card shadow-sm p-4 mb-4">
+        <h4 class="mb-3">Choisissez une recherche</h4>
+        <form method="POST">
+            <!-- Boutons radio pour choisir le type de recherche -->
+            <div class="mb-3">
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="choice" id="radio_parfum" value="parfum" onclick="toggleInputs()" required>
+                    <label class="form-check-label" for="radio_parfum">Parfums</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="choice" id="radio_composant" value="composant" onclick="toggleInputs()">
+                    <label class="form-check-label" for="radio_composant">Composants</label>
+                </div>
+            </div>
+    
+            <!-- Champs pour chercher un parfum ou un composant -->
+            <div id="parfum_input" class="mb-3" style="display: none;">
+                <label for="id_parfum" class="form-label">ID du Parfum :</label>
+                <input type="text" id="id_parfum" name="id_parfum" class="form-control" placeholder="Entrez l'ID du parfum">
+            </div>
+    
+            <div id="composant_input" class="mb-3" style="display: none;">
+                <label for="nom_composant" class="form-label">Nom du Composant :</label>
+                <input type="text" id="nom_composant" name="nom_composant" class="form-control" placeholder="Entrez le nom du composant">
+            </div>
+    
+            <!-- Bouton de soumission -->
+            <button type="submit" class="btn btn-primary mt-3">
+                <i class="fa fa-search"></i> Rechercher
+            </button>
+        </form>
+    </div>
+
+    <!-- Résultats pour les composants d'un parfum -->
+    {% if choice == "parfum" and composants %}
+    <div class="card shadow-sm p-4 mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Composants du Parfum {{ id_parfum }}</h4>
+            <p class="card-text">Liste des composants associés au parfum sélectionné.</p>
+        </div>
+        <form method="POST" action="/update_composants">
+            <table class="table table-hover table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID Composant</th>
+                        <th>Nom</th>
+                        <th>Quantité</th>
+                        <th>Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for composant in composants %}
+                        <tr>
+                            <td>{{ composant['id_componant'] }}</td>
+                            <td>{{ composant['nom'] }}</td>
+                            <td>
+                                <input type="number" name="quantité_{{ composant['id_componant'] }}" value="{{ composant['quantité'] }}" class="form-control">
+                            </td>
+                            <td>
+                                <input type="text" name="version_{{ composant['id_componant'] }}" value="{{ composant['version'] }}" class="form-control">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-success">Mettre à jour</button>
+        </form>
+        <a href="/download_pdf/{{ id_parfum }}" class="btn btn-success mt-3">
+            <i class="fa fa-download"></i> Télécharger en PDF
+        </a>
+    </div>
+{% elif choice == "composant" and parfums %}
+    <div class="card shadow-sm p-4">
+        <h4>Parfums contenant le composant "{{ nom_composant }}"</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID Parfum</th>
+                    <th>Nom</th>
+                    <th>Etat du projet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for parfum in parfums %}
+                    <tr>
+                        <td>{{ parfum['id_parfum'] }}</td>
+                        <td>{{ parfum['nom'] }}</td>
+                        <td>{{ parfum['etat_du_projet'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+</div>
+
+<!-- Bootstrap Bundle JS (includes Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
